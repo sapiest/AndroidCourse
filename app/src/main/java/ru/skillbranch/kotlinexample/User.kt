@@ -32,7 +32,7 @@ class User private constructor(
             field = value?.replace("[^+\\d]".toRegex(), "")
             field?.let {
                 if (it.replace("[^\\d]".toRegex(), "").length != 11) {
-                    throw IllegalArgumentException("Phone umber not valid")
+                    throw IllegalArgumentException("Enter a valid phone number starting with a + and containing 11 digits")
                 }
             }
         }
