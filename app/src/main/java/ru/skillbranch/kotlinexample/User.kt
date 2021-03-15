@@ -20,7 +20,7 @@ class User private constructor(
     private val fullName: String
         get() = listOfNotNull(firstName, lastName)
             .joinToString(" ")
-            .capitalize(Locale.ROOT)
+            .capitalize()
 
     private val initials: String
         get() = listOfNotNull(firstName, lastName)
