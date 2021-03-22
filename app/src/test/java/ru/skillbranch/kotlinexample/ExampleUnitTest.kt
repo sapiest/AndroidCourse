@@ -11,6 +11,7 @@ import org.junit.Assert.*
 import org.junit.After
 import org.junit.Assert
 import org.junit.Test
+import ru.skillbranch.kotlinexample.extensions.dropLastUntil
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -29,14 +30,14 @@ class ExampleUnitTest {
     }
      */
     @After
-    fun after(){
+    fun after() {
         UserHolder.clearHolder()
     }
 
     @Test
     fun register_user_success() {
         val holder = UserHolder
-        val user = holder.registerUser("John Doe", "John_Doe@unknown.com","testPass")
+        val user = holder.registerUser("John Doe", "John_Doe@unknown.com", "testPass")
         val expectedInfo = """
             firstName: John
             lastName: Doe
@@ -54,20 +55,20 @@ class ExampleUnitTest {
     @Test(expected = IllegalArgumentException::class)
     fun register_user_fail_blank() {
         val holder = UserHolder
-        holder.registerUser("", "John_Doe@unknown.com","testPass")
+        holder.registerUser("", "John_Doe@unknown.com", "testPass")
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun register_user_fail_illegal_name() {
         val holder = UserHolder
-        holder.registerUser("John Jr Doe", "John_Doe@unknown.com","testPass")
+        holder.registerUser("John Jr Doe", "John_Doe@unknown.com", "testPass")
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun register_user_fail_illegal_exist() {
         val holder = UserHolder
-        holder.registerUser("John Doe", "John_Doe@unknown.com","testPass")
-        holder.registerUser("John Doe", "John_Doe@unknown.com","testPass")
+        holder.registerUser("John Doe", "John_Doe@unknown.com", "testPass")
+        holder.registerUser("John Doe", "John_Doe@unknown.com", "testPass")
     }
 
     @Test
@@ -112,7 +113,7 @@ class ExampleUnitTest {
     @Test
     fun login_user_success() {
         val holder = UserHolder
-        holder.registerUser("John Doe", "John_Doe@unknown.com","testPass")
+        holder.registerUser("John Doe", "John_Doe@unknown.com", "testPass")
         val expectedInfo = """
             firstName: John
             lastName: Doe
@@ -124,7 +125,7 @@ class ExampleUnitTest {
             meta: {auth=password}
         """.trimIndent()
 
-        val successResult =  holder.loginUser("john_doe@unknown.com", "testPass")
+        val successResult = holder.loginUser("john_doe@unknown.com", "testPass")
 
         Assert.assertEquals(expectedInfo, successResult)
     }
@@ -144,7 +145,7 @@ class ExampleUnitTest {
             meta: {auth=sms}
         """.trimIndent()
 
-        val successResult =  holder.loginUser("+7 (917) 971-11-11", user.accessCode!!)
+        val successResult = holder.loginUser("+7 (917) 971-11-11", user.accessCode!!)
 
         Assert.assertEquals(expectedInfo, successResult)
     }
@@ -152,9 +153,9 @@ class ExampleUnitTest {
     @Test
     fun login_user_fail() {
         val holder = UserHolder
-        holder.registerUser("John Doe", "John_Doe@unknown.com","testPass")
+        holder.registerUser("John Doe", "John_Doe@unknown.com", "testPass")
 
-        val failResult =  holder.loginUser("john_doe@unknown.com", "test")
+        val failResult = holder.loginUser("john_doe@unknown.com", "test")
 
         Assert.assertNull(failResult)
     }
@@ -162,9 +163,9 @@ class ExampleUnitTest {
     @Test
     fun login_user_not_found() {
         val holder = UserHolder
-        holder.registerUser("John Doe", "John_Doe@unknown.com","testPass")
+        holder.registerUser("John Doe", "John_Doe@unknown.com", "testPass")
 
-        val failResult =  holder.loginUser("john_cena@unknown.com", "test")
+        val failResult = holder.loginUser("john_cena@unknown.com", "test")
 
         Assert.assertNull(failResult)
     }
@@ -187,9 +188,17 @@ class ExampleUnitTest {
             meta: {auth=sms}
         """.trimIndent()
 
-        val successResult =  holder.loginUser("+7 (917) 971-11-11", user.accessCode!!)
+        val successResult = holder.loginUser("+7 (917) 971-11-11", user.accessCode!!)
 
         Assert.assertNotEquals(oldAccess, user.accessCode!!)
         Assert.assertEquals(expectedInfo, successResult)
+    }
+
+    @Test
+    fun dropLastUntilTest() {
+        val newList = listOf(1, 2, 3).dropLastUntil { it == 2 }
+        val newListNames = "House Nymeros Martell of Sunspear".split(" ").dropLastUntil{ it == "of" }
+        assertEquals(newList, listOf(1))
+        assertEquals(newListNames, listOf("House", "Nymeros", "Martell"))
     }
 }
