@@ -30,10 +30,12 @@ class User private constructor(
     private var phone: String? = null
         set(value) {
             field = value?.replace("[^+\\d]".toRegex(), "")
-            field?.let {
-                if (it.replace("[^\\d]".toRegex(), "").length != 11) {
+            if(!field.isNullOrBlank()){
+                if (field!!.replace("[^\\d]".toRegex(), "").length != 11) {
                     throw IllegalArgumentException("Enter a valid phone number starting with a + and containing 11 digits")
                 }
+            }else{
+                field = null
             }
         }
 
@@ -66,6 +68,17 @@ class User private constructor(
     ) : this(firstName, lastName, rawPhone = rawPhone, meta = mapOf("auth" to "sms")) {
         println("secondary email constructor")
         requestAccessCode()
+    }
+
+    constructor(
+        firstName: String,
+        lastName: String?,
+        email: String?,
+        rawPhone: String?,
+        hash: String,
+    ): this(firstName, lastName, email = email, rawPhone = rawPhone, meta = mapOf("src" to "csv")){
+        println("secondary email constructor")
+        passwordHash = hash
     }
 
     init {
@@ -136,11 +149,13 @@ class User private constructor(
             fullName: String,
             email: String? = null,
             password: String? = null,
-            phone: String? = null
+            phone: String? = null,
+            hash: String? = null
         ): User {
             val (firstName, lastname) = fullName.fullNameToPair()
 
             return when {
+                !hash.isNullOrBlank() -> User(firstName, lastname, email, phone, hash)
                 !phone.isNullOrBlank() -> User(firstName, lastname, phone)
                 !email.isNullOrBlank() && !password.isNullOrBlank() -> User(
                     firstName,

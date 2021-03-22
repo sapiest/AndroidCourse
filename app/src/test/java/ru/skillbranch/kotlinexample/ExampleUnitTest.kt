@@ -201,4 +201,20 @@ class ExampleUnitTest {
         assertEquals(newList, listOf(1))
         assertEquals(newListNames, listOf("House", "Nymeros", "Martell"))
     }
+
+    @Test
+    fun importFromCsv() {
+        val newList = listOf(" John Doe ;JohnDoe@unknow.com;[B@7591083d:c6adb4becdc64e92857e1e2a0fd6af84;;")
+        val expectedInfo = """
+            firstName: John
+            lastName: Doe
+            login: johndoe@unknow.com
+            fullName: John Doe
+            initials: J D
+            email: JohnDoe@unknow.com
+            phone: null
+            meta: {src=csv}
+        """.trimIndent()
+        assertEquals(expectedInfo, UserHolder.importUsers(newList).first().userInfo)
+    }
 }
