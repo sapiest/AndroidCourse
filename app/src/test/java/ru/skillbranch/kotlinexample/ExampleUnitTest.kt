@@ -202,19 +202,43 @@ class ExampleUnitTest {
         assertEquals(newListNames, listOf("House", "Nymeros", "Martell"))
     }
 
+
+
     @Test
     fun importFromCsv() {
-        val newList = listOf(" John Doe ;JohnDoe@unknow.com;[B@7591083d:c6adb4becdc64e92857e1e2a0fd6af84;;")
+        val holder = UserHolder
+        //val newList = listOf(" John Doe ;JohnDoe@unknow.com;[B@7591083d:c6adb4becdc64e92857e1e2a0fd6af84;;")
+        val newList = listOf(" John Doe ;john_doe@unknown.com;[B@4c6e276e:e84bbe2e924a6f0eb5145990009842c0;;")
+
         val expectedInfo = """
             firstName: John
             lastName: Doe
-            login: johndoe@unknow.com
+            login: john_doe@unknown.com
             fullName: John Doe
             initials: J D
-            email: JohnDoe@unknow.com
+            email: john_doe@unknown.com
             phone: null
             meta: {src=csv}
         """.trimIndent()
-        assertEquals(expectedInfo, UserHolder.importUsers(newList).first().userInfo)
+
+//
+//        val expectedInfo = """
+//            firstName: John
+//            lastName: Doe
+//            login: johndoe@unknow.com
+//            fullName: John Doe
+//            initials: J D
+//            email: JohnDoe@unknow.com
+//            phone: null
+//            meta: {src=csv}
+//        """.trimIndent()
+
+        //[B@4c6e276e:e84bbe2e924a6f0eb5145990009842c0
+        //UserHolder.registerUser("John Doe", "John_Doe@unknown.com", "testPass")
+
+        holder.importUsers(newList)
+
+        val successResult = holder.loginUser("john_doe@unknown.com", "testPass")
+        assertEquals(expectedInfo, successResult)
     }
 }

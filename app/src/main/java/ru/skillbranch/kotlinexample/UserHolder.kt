@@ -40,9 +40,11 @@ object UserHolder {
         val fullName = list[NAME_INDEX]
         val email = list[EMAIL_INDEX]
         val rawPhone = list[PHONE_INDEX]
-        val hash = list[HASH_INDEX].replace(":", "")
+        val cachesum = list[HASH_INDEX].split(":")
+        val sult = cachesum[0]
+        val hash = cachesum[1]
 
-        return User.makeUser(fullName, email = email, phone = rawPhone, hash = hash)
+        return User.makeUser(fullName, email = email, phone = rawPhone, sult = sult, hash = hash)
             .also { user ->
                 if (map[user.login] != null) {
                     throw IllegalArgumentException("A user with this email already exists")
