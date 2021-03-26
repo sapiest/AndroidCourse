@@ -164,9 +164,9 @@ class User private constructor(
     companion object Factory {
         fun makeUser(
             fullName: String,
-            email: String? = "",
+            email: String? = null,
             password: String? = null,
-            phone: String? = "",
+            phone: String? = null,
             sult: String? = null,
             hash: String? = null
         ): User {

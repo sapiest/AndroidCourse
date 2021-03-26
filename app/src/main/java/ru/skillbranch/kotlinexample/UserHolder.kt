@@ -38,11 +38,15 @@ object UserHolder {
         list: List<String>
     ): User {
         val fullName = list[NAME_INDEX]
-        val email = list[EMAIL_INDEX]
-        val rawPhone = list[PHONE_INDEX]
-        val cachesum = list[HASH_INDEX].split(":")
-        val sult = cachesum[0]
-        val hash = cachesum[1]
+        val email = list[EMAIL_INDEX].let { if(it.isNotEmpty()) it else null }
+        val rawPhone = list[PHONE_INDEX].let { if(it.isNotEmpty()) it else null }
+        val cachesum = list[HASH_INDEX].let { if(it.isNotEmpty()) it.split(":") else null }
+        var sult: String? = null
+        var hash: String? = null
+        cachesum?.let {
+            sult = cachesum[0]
+            hash = cachesum[1]
+        }
 
         return User.makeUser(fullName, email = email, phone = rawPhone, sult = sult, hash = hash)
             .also { user ->

@@ -202,8 +202,6 @@ class ExampleUnitTest {
         assertEquals(newListNames, listOf("House", "Nymeros", "Martell"))
     }
 
-
-
     @Test
     fun importFromCsv() {
         val holder = UserHolder
@@ -239,6 +237,29 @@ class ExampleUnitTest {
         holder.importUsers(newList)
 
         val successResult = holder.loginUser("john_doe@unknown.com", "testPass")
+        assertEquals(expectedInfo, successResult)
+    }
+
+    @Test
+    fun importFromCsvPhone() {
+        val holder = UserHolder
+        val newList = listOf(" John ;;;+79009711111;")
+
+        val expectedInfo = """
+            firstName: John
+            lastName: Doe
+            login: john_doe@unknown.com
+            fullName: John Doe
+            initials: J D
+            email: john_doe@unknown.com
+            phone: null
+            meta: {src=csv}
+        """.trimIndent()
+
+//
+        val res = holder.importUsers(newList)
+
+        val successResult = holder.loginUser("+79009711111", res.first().accessCode!!)
         assertEquals(expectedInfo, successResult)
     }
 }
