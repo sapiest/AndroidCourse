@@ -24,18 +24,18 @@ import ru.skillbranch.skillarticles.viewmodels.ViewModelFactory
 
 class RootActivity : AppCompatActivity() {
 
-    private val toolbar: Toolbar by lazy { findViewById(R.id.toolbar) }
-    private val btnLike: CheckableImageView by lazy { findViewById(R.id.btn_like) }
-    private val btnBookmark: CheckableImageView by lazy { findViewById(R.id.btn_bookmark) }
-    private val btnShare: ImageView by lazy { findViewById(R.id.btn_share) }
-    private val btnSettings: CheckableImageView by lazy { findViewById(R.id.btn_settings) }
-    private val switchMode: SwitchMaterial by lazy { findViewById(R.id.switch_mode) }
-    private val root: CoordinatorLayout by lazy { findViewById(R.id.coordinator_container) }
-    private val bottombar: Bottombar by lazy { findViewById(R.id.bottombar) }
-    private val submenu: ArticleSubmenu by lazy { findViewById(R.id.submenu) }
-    private val btnTextUp: CheckableImageView by lazy { findViewById(R.id.btn_text_up) }
-    private val btnTextDown: CheckableImageView by lazy { findViewById(R.id.btn_text_down) }
-    private val tvTextContent: TextView by lazy { findViewById(R.id.tv_text_content) }
+    private val toolbar: Toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
+    private val btnLike: CheckableImageView by lazy { findViewById<CheckableImageView>(R.id.btn_like) }
+    private val btnBookmark: CheckableImageView by lazy { findViewById<CheckableImageView>(R.id.btn_bookmark) }
+    private val btnShare: ImageView by lazy { findViewById<ImageView>(R.id.btn_share) }
+    private val btnSettings: CheckableImageView by lazy { findViewById<CheckableImageView>(R.id.btn_settings) }
+    private val switchMode: SwitchMaterial by lazy { findViewById<SwitchMaterial>(R.id.switch_mode) }
+    private val root: CoordinatorLayout by lazy { findViewById<CoordinatorLayout>(R.id.coordinator_container) }
+    private val bottombar: Bottombar by lazy { findViewById<Bottombar>(R.id.bottombar) }
+    private val submenu: ArticleSubmenu by lazy { findViewById<ArticleSubmenu>(R.id.submenu) }
+    private val btnTextUp: CheckableImageView by lazy { findViewById<CheckableImageView>(R.id.btn_text_up) }
+    private val btnTextDown: CheckableImageView by lazy { findViewById<CheckableImageView>(R.id.btn_text_down) }
+    private val tvTextContent: TextView by lazy { findViewById<TextView>(R.id.tv_text_content) }
 
 
     private lateinit var viewmodel: ArticleViewModel
