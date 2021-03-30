@@ -1,7 +1,6 @@
 package ru.skillbranch.skillarticles.ui
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -11,7 +10,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 import ru.skillbranch.skillarticles.R
@@ -106,8 +104,8 @@ class RootActivity : AppCompatActivity() {
 
     private fun renderUi(data: ArticleState) {
         //bind submenu
-        btnSettings.isChecked = data.isShownMenu
-        if (data.isShownMenu) submenu.open() else submenu.close()
+        btnSettings.isChecked = data.isShowMenu
+        if (data.isShowMenu) submenu.open() else submenu.close()
 
         //bind article person data
         btnLike.isChecked = data.isLike

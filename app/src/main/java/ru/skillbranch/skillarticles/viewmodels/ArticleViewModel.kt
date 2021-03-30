@@ -71,7 +71,7 @@ class ArticleViewModel(private val articleId: String) :
 
 
     override fun handleToggleMenu() {
-        updateState { it.copy(isShownMenu = !it.isShownMenu) }
+        updateState { it.copy(isShowMenu = !it.isShowMenu) }
     }
 
     override fun handleShare() {
@@ -80,7 +80,15 @@ class ArticleViewModel(private val articleId: String) :
     }
 
     override fun handleBookmark() {
-        TODO("Not yet implemented")
+        val info = currentState.toArticlePersonalInfo()
+        repository.updateArticlePersonalInfo(info.copy(isBookmark = !info.isBookmark))
+
+        val msg = if (currentState.isBookmark) Notify.TextMessage("Add to bookmarks")
+        else {
+            Notify.TextMessage("Remove from bookmark")
+        }
+
+        notify(msg)
     }
 
     override fun handleLike() {
@@ -113,7 +121,7 @@ class ArticleViewModel(private val articleId: String) :
         repository.updateSettings(currentState.toAppSettings().copy(isBigText = false))
     }
 
-    override  fun handleUpText() {
+    override fun handleUpText() {
         repository.updateSettings(currentState.toAppSettings().copy(isBigText = true))
     }
 }
@@ -124,7 +132,7 @@ data class ArticleState(
     val isLoadingReviews: Boolean = true,
     val isLike: Boolean = false,
     val isBookmark: Boolean = false,
-    val isShownMenu: Boolean = false,
+    val isShowMenu: Boolean = false,
     val isBigText: Boolean = false,
     val isDarkMode: Boolean = false,
     val isSearch: Boolean = false,
