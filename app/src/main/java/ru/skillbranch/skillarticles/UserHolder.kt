@@ -1,7 +1,6 @@
-package ru.skillbranch.kotlinexample
+package ru.skillbranch.skillarticles
 
 import androidx.annotation.VisibleForTesting
-import java.util.*
 
 object UserHolder {
     private val map = mutableMapOf<String, User>()

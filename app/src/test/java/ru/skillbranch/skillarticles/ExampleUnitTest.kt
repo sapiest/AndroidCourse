@@ -1,4 +1,4 @@
-package ru.skillbranch.kotlinexample
+package ru.skillbranch.skillarticles
 
 import org.junit.Assert.*
 
