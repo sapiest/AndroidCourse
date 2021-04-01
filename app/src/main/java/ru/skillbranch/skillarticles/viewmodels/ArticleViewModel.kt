@@ -86,7 +86,7 @@ class ArticleViewModel(private val articleId: String) :
 
         val msg = if (currentState.isBookmark) Notify.TextMessage("Add to bookmarks")
         else {
-            Notify.TextMessage("Remove from bookmark")
+            Notify.TextMessage("Remove from bookmarks")
         }
 
         notify(msg)
