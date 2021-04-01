@@ -77,7 +77,7 @@ class ArticleViewModel(private val articleId: String) :
 
     override fun handleShare() {
         val msg = "Share is not implemented"
-        notify(Notify.ErrorMessage(msg, "Ok", null))
+        notify(Notify.ErrorMessage(msg, "OK", null))
     }
 
     override fun handleBookmark() {
