@@ -19,7 +19,7 @@ class ArticleSubmenu @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
-    private var isOpen = false
+    var isOpen = false
     private var centerX: Float = context.dpToPx(200)
     private var centerY: Float = context.dpToPx(96)
 
@@ -33,32 +33,17 @@ class ArticleSubmenu @JvmOverloads constructor(
 
     fun open() {
         if (isOpen || !isAttachedToWindow) return
-        isOpen = !isOpen
-        animateShow()
+        isOpen = true
+        animatedShow()
     }
 
     fun close() {
         if (!isOpen || !isAttachedToWindow) return
-        isOpen = !isOpen
+        isOpen = false
         animatedHide()
     }
 
-    private fun animatedHide(){
-        val endRadius = hypot(centerX, centerY).toInt()
-        val anim = ViewAnimationUtils.createCircularReveal(
-            this,
-            centerX.toInt(),
-            centerY.toInt(),
-            endRadius.toFloat(),
-            0f
-        )
-        anim.doOnEnd {
-            visibility = View.GONE
-        }
-        anim.start()
-    }
-
-    private fun animateShow(){
+    private fun animatedShow() {
         val endRadius = hypot(centerX, centerY).toInt()
         val anim = ViewAnimationUtils.createCircularReveal(
             this,
@@ -73,39 +58,57 @@ class ArticleSubmenu @JvmOverloads constructor(
         anim.start()
     }
 
+    private fun animatedHide() {
+        val endRadius = hypot(centerX, centerY).toInt()
+        val anim = ViewAnimationUtils.createCircularReveal(
+            this,
+            centerX.toInt(),
+            centerY.toInt(),
+            endRadius.toFloat(),
+            0f
+        )
+        anim.doOnEnd {
+            visibility = View.GONE
+        }
+        anim.start()
+    }
+
+    //save state
     override fun onSaveInstanceState(): Parcelable? {
         val savedState = SavedState(super.onSaveInstanceState())
         savedState.ssIsOpen = isOpen
         return savedState
     }
 
-    override fun onRestoreInstanceState(state: Parcelable?) {
+    //restore state
+    override fun onRestoreInstanceState(state: Parcelable) {
         super.onRestoreInstanceState(state)
-        if(state is SavedState){
+        if (state is SavedState) {
             isOpen = state.ssIsOpen
-            visibility = if(isOpen) View.VISIBLE else View.GONE
+            visibility = if (isOpen) View.VISIBLE else View.GONE
         }
     }
 
-    private class SavedState: BaseSavedState, Parcelable{
+    private class SavedState : BaseSavedState, Parcelable {
         var ssIsOpen: Boolean = false
 
-        constructor(superState: Parcelable?): super(superState)
+        constructor(superState: Parcelable?) : super(superState)
 
-        constructor(src: Parcel): super(src){
+        constructor(src: Parcel) : super(src) {
             ssIsOpen = src.readInt() == 1
+        }
+
+        override fun writeToParcel(dst: Parcel, flags: Int) {
+            super.writeToParcel(dst, flags)
+            dst.writeInt(if (ssIsOpen) 1 else 0)
         }
 
         override fun describeContents() = 0
 
-        override fun writeToParcel(out: Parcel, flags: Int) {
-            super.writeToParcel(out, flags)
-            out.writeInt(if(ssIsOpen) 1 else 0)
-        }
-
-        companion object CREATER: Parcelable.Creator<SavedState>{
-            override fun createFromParcel(source: Parcel) = SavedState(source)
+        companion object CREATOR : Parcelable.Creator<SavedState> {
+            override fun createFromParcel(parcel: Parcel) = SavedState(parcel)
             override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
         }
     }
+
 }
