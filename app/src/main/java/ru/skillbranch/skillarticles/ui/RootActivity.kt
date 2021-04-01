@@ -79,8 +79,8 @@ class RootActivity : AppCompatActivity() {
                     setBackgroundTint(getColor(R.color.design_default_color_error))
                     setTextColor(getColor(android.R.color.white))
                     setActionTextColor(getColor(android.R.color.white))
-                    setAction(notify.errorLabel) {
-                        notify.errorHandler?.invoke()
+                    setAction(notify.errLabel) {
+                        notify.errHandler?.invoke()
                     }
                 }
             }
