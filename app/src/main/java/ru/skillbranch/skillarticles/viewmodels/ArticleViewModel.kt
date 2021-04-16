@@ -26,14 +26,6 @@ class ArticleViewModel(private val articleId: String) :
             )
         }
 
-        subscribeOnDataSource(getArticleContent()) { content, state ->
-            content ?: return@subscribeOnDataSource null
-            state.copy(
-                isLoadingContent = false,
-                content = content
-            )
-        }
-
         subscribeOnDataSource(getArticlePersonalInfo()) { info, state ->
             info ?: return@subscribeOnDataSource null
             state.copy(
@@ -46,6 +38,14 @@ class ArticleViewModel(private val articleId: String) :
             state.copy(
                 isDarkMode = settings.isDarkMode,
                 isBigText = settings.isBigText
+            )
+        }
+
+        subscribeOnDataSource(getArticleContent()) { content, state ->
+            content ?: return@subscribeOnDataSource null
+            state.copy(
+                isLoadingContent = false,
+                content = content
             )
         }
     }
