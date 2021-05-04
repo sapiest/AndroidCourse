@@ -51,11 +51,11 @@ class ArticleViewModel(private val articleId: String) :
     }
 
     override fun handleSearchMode(isSearch: Boolean) {
-        TODO("Not yet implemented")
+        updateState { it.copy(isSearch = isSearch) }
     }
 
     override fun handleSearch(query: String?) {
-        TODO("Not yet implemented")
+        updateState { it.copy(searchQuery = query) }
     }
 
     override fun getArticleContent(): LiveData<List<Any>?> {
@@ -137,7 +137,7 @@ data class ArticleState(
     val isBigText: Boolean = false,
     val isDarkMode: Boolean = false,
     val isSearch: Boolean = false,
-    val SearchQuery: String? = null,
+    val searchQuery: String? = null,
     val searchResults: List<Pair<Int, Int>> = emptyList(),
     val searchPosition: Int = 0,
     val shareLink: String? = null,
