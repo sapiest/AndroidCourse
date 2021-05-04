@@ -63,7 +63,7 @@ class RootActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_search, menu)
-        val menuItem = menu?.findItem(R.id.search)
+        val menuItem = menu?.findItem(R.id.action_search)
         val searchView = (menuItem?.actionView as SearchView)
         searchView.queryHint = "Search"
 
