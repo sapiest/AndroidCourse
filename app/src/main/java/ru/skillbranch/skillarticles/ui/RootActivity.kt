@@ -19,11 +19,11 @@ import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.text.getSpans
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.databinding.ActivityRootBinding
-import ru.skillbranch.skillarticles.databinding.LayoutBottombarBinding
 import ru.skillbranch.skillarticles.databinding.LayoutSubmenuBinding
 import ru.skillbranch.skillarticles.extensions.dpToIntPx
 import ru.skillbranch.skillarticles.ui.custom.*
@@ -32,7 +32,9 @@ import ru.skillbranch.skillarticles.ui.delegates.viewBinding
 import ru.skillbranch.skillarticles.viewmodels.*
 
 class RootActivity : AppCompatActivity(), IArticleView {
-    private val viewmodel: ArticleViewModel by viewModels<ArticleViewModel> { ViewModelFactory(this, "0") }
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    var viewModelFactory: ViewModelProvider.Factory = ViewModelFactory(this, "0")
+    private val viewmodel: ArticleViewModel by viewModels<ArticleViewModel> { viewModelFactory }
     private val vb: ActivityRootBinding by viewBinding(ActivityRootBinding::inflate)
 
     private val vbBottomBar: Bottombar
@@ -68,7 +70,7 @@ class RootActivity : AppCompatActivity(), IArticleView {
         setupSubmenu()
 
         viewmodel.observeState(this, ::renderUi)
-        viewmodel.observeSubState(this, ArticleState::toBottomBarData, ::renderBottombar)
+        viewmodel.observeSubState(this, ArticleState::toBottombarData, ::renderBotombar)
         viewmodel.observeSubState(this, ArticleState::toSubmenuData, ::renderSubmenu)
 
         viewmodel.observeNotifications(this) {
@@ -287,7 +289,7 @@ class RootActivity : AppCompatActivity(), IArticleView {
         //vb.scroll.setMarginOptionally(bottom = dpToIntPx(0))
     }
 
-    override fun renderBottombar(data: BottomBarData) {
+    override fun renderBotombar(data: BottombarData) {
         btnSettings.isChecked = data.isShowMenu
         btnLike.isChecked = data.isLike
         btnBookmark.isChecked = data.isBookmark

@@ -207,7 +207,7 @@ data class ArticleState(
     }
 }
 
-data class BottomBarData(
+data class BottombarData(
     val isLike: Boolean = false,
     val isBookmark: Boolean = false,
     val isShowMenu: Boolean = false,
@@ -222,7 +222,7 @@ data class SubmenuData(
     val idDarkMode: Boolean = false
 )
 
-fun ArticleState.toBottomBarData() =
-    BottomBarData(isLike, isBookmark, isShowMenu, isSearch, searchResults.size, searchPosition)
+fun ArticleState.toBottombarData() =
+    BottombarData(isLike, isBookmark, isShowMenu, isSearch, searchResults.size, searchPosition)
 
 fun ArticleState.toSubmenuData() = SubmenuData(isShowMenu, isBigText, isDarkMode)
