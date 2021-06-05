@@ -19,15 +19,12 @@ fun String?.indexesOf(
 //        emptyList()
 //    }
     val list = arrayListOf<Int>()
-    var index = 0
+    if (subStr.isNullOrEmpty()) return list
+    var index = this?.indexOf(subStr, 0, ignoreCase) ?: -1
     //var lastIndex = this?.indexOf(subStr, 0, ignoreCase) ?: -1
-    while (index != -1){
-        index = this?.indexOf(subStr, 0, ignoreCase) ?: -1
-        if(index == -1){
-            return list
-        }else{
-            list.add(index)
-        }
+    while (index != -1) {
+        list.add(index)
+        index = this?.indexOf(subStr, index + subStr.length, ignoreCase) ?: -1
     }
 
     return list
