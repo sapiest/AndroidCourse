@@ -26,6 +26,7 @@ import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.databinding.ActivityRootBinding
 import ru.skillbranch.skillarticles.databinding.LayoutSubmenuBinding
 import ru.skillbranch.skillarticles.extensions.dpToIntPx
+import ru.skillbranch.skillarticles.extensions.setMarginOptionally
 import ru.skillbranch.skillarticles.ui.custom.*
 import ru.skillbranch.skillarticles.ui.delegates.AttrValue
 import ru.skillbranch.skillarticles.ui.delegates.viewBinding
@@ -281,12 +282,14 @@ class RootActivity : AppCompatActivity(), IArticleView {
             setSearchState(true)
             setSearchInfo(resultsCount, searchPosition)
         }
-        //vb.scroll.setMarginOptionally(bottom = dpToIntPx(56))
+        vb.scroll.setMarginOptionally(bottom = dpToIntPx(56))
     }
 
     override fun hideSearchBar() {
-        //TODO("Not yet implemented")
-        //vb.scroll.setMarginOptionally(bottom = dpToIntPx(0))
+        with(vbBottomBar){
+            setSearchState(false)
+        }
+        vb.scroll.setMarginOptionally(bottom = dpToIntPx(0))
     }
 
     override fun renderBotombar(data: BottombarData) {
