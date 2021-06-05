@@ -210,7 +210,6 @@ class RootActivity : AppCompatActivity(), IArticleView {
             subtitle = data.category ?: "Loading"
             if (data.categoryIcon != null) logo =
                 ContextCompat.getDrawable(this@RootActivity, data.categoryIcon as Int)
-
         }
 
 
