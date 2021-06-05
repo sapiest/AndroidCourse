@@ -57,8 +57,10 @@ class RootActivity : AppCompatActivity(), IArticleView {
     private val tvTextContent: TextView by lazy { vb.tvTextContent }
 
     private lateinit var searchView: SearchView
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     val bgColor by AttrValue(R.attr.colorSecondary)
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     val fgColor by AttrValue(R.attr.colorOnSecondary)
 
@@ -188,11 +190,11 @@ class RootActivity : AppCompatActivity(), IArticleView {
         delegate.localNightMode =
             if (data.isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
 
-        with(tvTextContent){
+        with(tvTextContent) {
             textSize = if (data.isBigText) 18f else 14f
             movementMethod = ScrollingMovementMethod()
             val content = if (data.isLoadingContent) "Loading" else data.content.first()
-            if(text.toString() == content) {
+            if (text.toString() == content) {
                 setText(content, TextView.BufferType.SPANNABLE)
             }
         }
@@ -203,7 +205,7 @@ class RootActivity : AppCompatActivity(), IArticleView {
 
         //bind toolbar
 
-        with(toolbar){
+        with(toolbar) {
             title = data.title ?: "Loading"
             subtitle = data.category ?: "Loading"
             if (data.categoryIcon != null) logo =
@@ -212,10 +214,10 @@ class RootActivity : AppCompatActivity(), IArticleView {
         }
 
 
-        if(data.isSearch){
+        if (data.isSearch) {
             renderSearchResult(data.searchResults)
             renderSearchPosition(data.searchPosition)
-        }else clearSearchResult()
+        } else clearSearchResult()
     }
 
     override fun setupToolbar() {
@@ -259,7 +261,7 @@ class RootActivity : AppCompatActivity(), IArticleView {
             content.removeSpan(it)
         }
 
-        if(spans.isNotEmpty()){
+        if (spans.isNotEmpty()) {
             val result = spans[searchPosition]
             Selection.setSelection(content, content.getSpanStart(result))
             content.setSpan(
@@ -278,7 +280,7 @@ class RootActivity : AppCompatActivity(), IArticleView {
     }
 
     override fun showSearchBar(resultsCount: Int, searchPosition: Int) {
-        with(vbBottomBar){
+        with(vbBottomBar) {
             setSearchState(true)
             setSearchInfo(resultsCount, searchPosition)
         }
@@ -286,7 +288,7 @@ class RootActivity : AppCompatActivity(), IArticleView {
     }
 
     override fun hideSearchBar() {
-        with(vbBottomBar){
+        with(vbBottomBar) {
             setSearchState(false)
         }
         vb.scroll.setMarginOptionally(bottom = dpToIntPx(0))
@@ -297,7 +299,10 @@ class RootActivity : AppCompatActivity(), IArticleView {
         btnLike.isChecked = data.isLike
         btnBookmark.isChecked = data.isBookmark
 
-        if(data.isSearch) showSearchBar(data.resultsCount, data.searchPosition)
+        if (data.isSearch) showSearchBar(
+            data.resultsCount,
+            data.searchPosition
+        ) else hideSearchBar()
     }
 
     override fun renderSubmenu(data: SubmenuData) {

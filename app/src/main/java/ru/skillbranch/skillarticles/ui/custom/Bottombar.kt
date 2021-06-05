@@ -33,12 +33,12 @@ class Bottombar @JvmOverloads constructor(
     override fun onSaveInstanceState(): Parcelable? {
         val saveState = SavedState(super.onSaveInstanceState())
         saveState.ssIsSearchMode = isSearchMode
-        return super.onSaveInstanceState()
+        return saveState
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
         super.onRestoreInstanceState(state)
-        if(state is SavedState){
+        if (state is SavedState) {
             isSearchMode = state.ssIsSearchMode
             binding.reveal.isVisible = isSearchMode
             binding.bottomGroup.isVisible = !isSearchMode
@@ -51,6 +51,7 @@ class Bottombar @JvmOverloads constructor(
 
     fun setSearchState(isSearch: Boolean) {
         if (isSearch == isSearchMode || !isAttachedToWindow) return
+        isSearchMode = isSearch
         if (isSearchMode) animateShowSearch()
         else animateHideSearch()
     }
@@ -93,11 +94,11 @@ class Bottombar @JvmOverloads constructor(
             binding.reveal,
             width,
             height / 2,
-            0f,
-            endRadius.toFloat()
+            endRadius.toFloat(),
+            0f
         )
         va.doOnEnd {
-            binding.bottomGroup.isVisible = true
+            binding.reveal.isVisible = false
         }
         va.start()
     }
