@@ -29,7 +29,7 @@ class PrefObjDelegate<T>(
             // sync read
             _storedValue = adapter.fromJson(runBlocking(Dispatchers.IO) { flowValue.first() } ?: "")
         }
-        return _storedValue!!
+        return _storedValue
     }
 
     override fun setValue(thisRef: PrefManager, property: KProperty<*>, value: T?) {
