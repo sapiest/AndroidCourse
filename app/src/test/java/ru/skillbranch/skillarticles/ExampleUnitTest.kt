@@ -40,8 +40,6 @@ class UnitTest {
         Assert.assertEquals(expectedOrderedList, actualOrderedList)
     }
 
-
-
     @Test
     fun parse_header() {
         val result = MarkdownParser.parse(headerString)
@@ -105,14 +103,14 @@ class UnitTest {
         val actual = prepare<Element.InlineCode>(result.elements)
         Assert.assertEquals(expectedInline, actual)
     }
-//
-//    @Test
-//    fun parse_multiline_code() {
-//        val result = MarkdownParser.parse(multilineCode)
-//        val actual = prepare<Element.BlockCode>(result.elements) //optionally
-//        Assert.assertEquals(expectedMultilineCode, actual) //optionally
-//    }
-//
+
+    @Test
+    fun parse_multiline_code() {
+        val result = MarkdownParser.parse(multilineCode)
+        val actual = prepare<Element.BlockCode>(result.elements) //optionally
+        Assert.assertEquals(expectedMultilineCode, actual) //optionally
+    }
+
     @Test
     fun parse_link() {
         val result = MarkdownParser.parse(linkString)
@@ -124,24 +122,24 @@ class UnitTest {
         Assert.assertEquals(expectedLink["titles"], actual)
         Assert.assertEquals(expectedLink["links"], actualLink)
     }
-//
-//    @Test
-//    fun parse_images() {
-//        val result = MarkdownParser.parse(imagesString)
-//        val actual = prepare<Element.Image>(result.elements)
-//        val actualLink = result.elements.spread()
-//            .filterIsInstance<Element.Image>()
-//            .map{it.url}
-//
-//        val actualAlts = result.elements.spread()
-//            .filterIsInstance<Element.Image>()
-//            .map{it.alt}
-//
-//        Assert.assertEquals(expectedImages["titles"], actual)
-//        Assert.assertEquals(expectedImages["alts"], actualAlts)
-//        Assert.assertEquals(expectedImages["links"], actualLink)
-//    }
-//
+
+    @Test
+    fun parse_images() {
+        val result = MarkdownParser.parse(imagesString)
+        val actual = prepare<Element.Image>(result.elements)
+        val actualLink = result.elements.spread()
+            .filterIsInstance<Element.Image>()
+            .map{it.url}
+
+        val actualAlts = result.elements.spread()
+            .filterIsInstance<Element.Image>()
+            .map{it.alt}
+
+        Assert.assertEquals(expectedImages["titles"], actual)
+        Assert.assertEquals(expectedImages["alts"], actualAlts)
+        Assert.assertEquals(expectedImages["links"], actualLink)
+    }
+
     @Test
     fun parse_all() {
         val result = MarkdownParser.parse(markdownString)
@@ -169,55 +167,55 @@ class UnitTest {
         Assert.assertEquals(expectedMarkdown["linkTitles"], actualLinkTitles)
         Assert.assertEquals(expectedMarkdown["links"], actualLinks)
     }
-//
-//    @Test
-//    fun clear_all() {
-//        val result = MarkdownParser.clear(markdownString)
-//        Assert.assertEquals(markdownClearString, result)
-//    }
-//
-//
-//    @Test
-//    fun clear_all_with_optionally() {
-//        val result = MarkdownParser.clear(markdownString)
-//        Assert.assertEquals(markdownOptionallyClearString, result)
-//    }
-//
-//    //optionally (delete @Ignore fo run)
-//    @Test
-//    fun parse_all_with_optionally() {
-//        val result = MarkdownParser.parse(markdownString)
-//        val actualUnorderedList = prepare<Element.UnorderedListItem>(result.elements)
-//        val actualHeaders = prepare<Element.Header>(result.elements)
-//        val actualQuotes = prepare<Element.Quote>(result.elements)
-//        val actualItalic = prepare<Element.Italic>(result.elements)
-//        val actualBold = prepare<Element.Bold>(result.elements)
-//        val actualStrike = prepare<Element.Strike>(result.elements)
-//        val actualRule = prepare<Element.Rule>(result.elements)
-//        val actualInline = prepare<Element.InlineCode>(result.elements)
-//        val actualLinkTitles = prepare<Element.Link>(result.elements)
-//        val actualLinks = result.elements.spread()
-//            .filterIsInstance<Element.Link>()
-//            .map { it.link }
-//        val actualBlockCode = prepare<Element.BlockCode>(result.elements) //optionally
-//        val actualOrderedList = prepare<Element.OrderedListItem>(result.elements) //optionally
-//
-//        Assert.assertEquals(expectedMarkdown["unorderedList"], actualUnorderedList)
-//        Assert.assertEquals(expectedMarkdown["header"], actualHeaders)
-//        Assert.assertEquals(expectedMarkdown["quote"], actualQuotes)
-//        Assert.assertEquals(expectedMarkdown["italic"], actualItalic)
-//        Assert.assertEquals(expectedMarkdown["bold"], actualBold)
-//        Assert.assertEquals(expectedMarkdown["strike"], actualStrike)
-//        Assert.assertEquals(3, actualRule.size)
-//        Assert.assertEquals(expectedMarkdown["inline"], actualInline)
-//        Assert.assertEquals(expectedMarkdown["linkTitles"], actualLinkTitles)
-//        Assert.assertEquals(expectedMarkdown["links"], actualLinks)
-//        Assert.assertEquals(expectedMarkdown["multiline"], actualBlockCode)
-//        Assert.assertEquals(expectedMarkdown["orderedList"], actualOrderedList)
-//    }
-//
-//
-//
+
+    @Test
+    fun clear_all() {
+        val result = MarkdownParser.clear(markdownString)
+        Assert.assertEquals(markdownClearString, result)
+    }
+
+
+    @Test
+    fun clear_all_with_optionally() {
+        val result = MarkdownParser.clear(markdownString)
+        Assert.assertEquals(markdownOptionallyClearString, result)
+    }
+
+    //optionally (delete @Ignore fo run)
+    @Test
+    fun parse_all_with_optionally() {
+        val result = MarkdownParser.parse(markdownString)
+        val actualUnorderedList = prepare<Element.UnorderedListItem>(result.elements)
+        val actualHeaders = prepare<Element.Header>(result.elements)
+        val actualQuotes = prepare<Element.Quote>(result.elements)
+        val actualItalic = prepare<Element.Italic>(result.elements)
+        val actualBold = prepare<Element.Bold>(result.elements)
+        val actualStrike = prepare<Element.Strike>(result.elements)
+        val actualRule = prepare<Element.Rule>(result.elements)
+        val actualInline = prepare<Element.InlineCode>(result.elements)
+        val actualLinkTitles = prepare<Element.Link>(result.elements)
+        val actualLinks = result.elements.spread()
+            .filterIsInstance<Element.Link>()
+            .map { it.link }
+        val actualBlockCode = prepare<Element.BlockCode>(result.elements) //optionally
+        val actualOrderedList = prepare<Element.OrderedListItem>(result.elements) //optionally
+
+        Assert.assertEquals(expectedMarkdown["unorderedList"], actualUnorderedList)
+        Assert.assertEquals(expectedMarkdown["header"], actualHeaders)
+        Assert.assertEquals(expectedMarkdown["quote"], actualQuotes)
+        Assert.assertEquals(expectedMarkdown["italic"], actualItalic)
+        Assert.assertEquals(expectedMarkdown["bold"], actualBold)
+        Assert.assertEquals(expectedMarkdown["strike"], actualStrike)
+        Assert.assertEquals(3, actualRule.size)
+        Assert.assertEquals(expectedMarkdown["inline"], actualInline)
+        Assert.assertEquals(expectedMarkdown["linkTitles"], actualLinkTitles)
+        Assert.assertEquals(expectedMarkdown["links"], actualLinks)
+        Assert.assertEquals(expectedMarkdown["multiline"], actualBlockCode)
+        Assert.assertEquals(expectedMarkdown["orderedList"], actualOrderedList)
+    }
+
+
+
     private fun printResults(list:List<String>){
         val iterator = list.iterator()
         while (iterator.hasNext()){

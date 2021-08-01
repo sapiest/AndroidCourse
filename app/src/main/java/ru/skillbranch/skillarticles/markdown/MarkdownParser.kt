@@ -1,5 +1,6 @@
 package ru.skillbranch.skillarticles.markdown
 
+import java.lang.StringBuilder
 import java.util.regex.Pattern
 
 object MarkdownParser {
@@ -12,18 +13,21 @@ object MarkdownParser {
     private const val HEADER_GROUP = "(^#{1,6} .+?$)"
     private const val QUOTE_GROUP = "(^> .+?$)"
     private const val ITALIC_GROUP = "((?<!\\*)\\*[^*].*?[^*]?\\*(?!\\*)|(?<!_)_[^_].*?[^_]?_(?!_))"
-    private const val BOLD_GROUP = "((?<!\\*)\\*{2}[^*].*?[^*]?\\*{2}(?!\\*)|(?<!\\_)\\_{2}[^_].*?[^_]?\\_{2}(?!\\_))"
+    private const val BOLD_GROUP =
+        "((?<!\\*)\\*{2}[^*].*?[^*]?\\*{2}(?!\\*)|(?<!\\_)\\_{2}[^_].*?[^_]?\\_{2}(?!\\_))"
     private const val STRIKE_GROUP = "((?<!\\~)\\~{2}[^~].*?[^~]?\\~{2}(?!\\~))"
     private const val RULE_GROUP = "(^[-_*]{3}$)"
     private const val INLINE_GROUP = "((?<!`)`[^`\\s].*?[^`\\s]?`(?!`))"
     private const val LINK_GROUP = "(\\[[^\\[\\]]*?]\\(.+?\\)|^\\[*?]\\(.*?\\))"
-    private const val BLOCK_CODE_GROUP = ""
+    private const val BLOCK_CODE_GROUP =
+        "((?<!\\`{3})\\`{3}[^\\`{3}].*?[^\\`{3}]*?\\S\\`{3}(?!\\`{3}))"
+    private const val IMAGE_GROUP = "(!\\[[^\\[\\]]*?]\\(.+?\\)|^\\[*?]\\(.*?\\))"
 
 
     //result regex
     const val MARKDOWN_GROUPS = "$UNORDERED_LIST_ITEM_GROUP|$HEADER_GROUP|$QUOTE_GROUP|" +
             "$ITALIC_GROUP|$BOLD_GROUP|$STRIKE_GROUP|$RULE_GROUP|$INLINE_GROUP|$LINK_GROUP|" +
-            "$ORDERED_LIST_ITEM_GROUP|$BLOCK_CODE_GROUP"
+            "$ORDERED_LIST_ITEM_GROUP|$BLOCK_CODE_GROUP|$IMAGE_GROUP"
 
     private val elementsPattern by lazy { Pattern.compile(MARKDOWN_GROUPS, Pattern.MULTILINE) }
 
@@ -42,7 +46,21 @@ object MarkdownParser {
      */
 
     fun clear(string: String): String? {
-        return null
+        val result = parse(string)
+        val str = StringBuilder()
+//        result.elements.forEach {
+//            str.append(clearChildren(it))
+//        }
+        return str.toString()
+    }
+
+    private fun clearChildren(element: Element): String{
+        val str = StringBuilder()
+        str.append(element.text)
+//        element.elements.forEach {
+//            str.append(clearChildren(it))
+//        }
+        return str.toString()
     }
 
     /**
@@ -64,7 +82,7 @@ object MarkdownParser {
 
             var text: CharSequence
 
-            val groups = 1..10
+            val groups = 1..12
             var group = -1
             for (gr in groups) {
                 if (matcher.group(gr) != null) {
@@ -153,7 +171,8 @@ object MarkdownParser {
                 //LINK
                 9 -> {
                     text = string.subSequence(startIndex, endIndex)
-                    val (title: String, link: String) = "\\[(.*)]\\((.*)\\)".toRegex().find(text)!!.destructured
+                    val (title: String, link: String) = "\\[(.*)]\\((.*)\\)".toRegex()
+                        .find(text)!!.destructured
                     val element = Element.Link(link, title)
                     parents.add(element)
                     lastStartIndex = endIndex
@@ -167,6 +186,37 @@ object MarkdownParser {
                     text = string.subSequence(startIndex.plus(valueLength.inc()), endIndex)
                     val subElements = findElements(text)
                     val element = Element.OrderedListItem(order, text, subElements)
+                    parents.add(element)
+                    lastStartIndex = endIndex
+                }
+
+                //BLOCKED_CODE
+                11 -> {
+                    text = string.subSequence(startIndex.plus(3), endIndex.minus(3))
+                    val subElements = findElements(text)
+                    val element = Element.BlockCode(text, subElements)
+                    parents.add(element)
+                    lastStartIndex = endIndex
+                }
+
+                //IMAGES
+                12 -> {
+                    text = string.subSequence(startIndex, endIndex)
+                    val (alt: String, link: String) = "\\[(.*)]\\((.*)\\)".toRegex()
+                        .find(text)!!.destructured
+
+                    val element = if (link.contains("\".*?\"".toRegex())) {
+                        val (newLink: String, title: String) = "(.*)(\".*?\")".toRegex()
+                            .find(link)!!.destructured
+                        Element.Image(
+                            newLink.subSequence(0, newLink.lastIndex).toString(),
+                            if (alt.isEmpty()) null else alt,
+                            title.subSequence(1, title.lastIndex).toString()
+                        )
+                    } else {
+                        Element.Image(link, if (alt.isEmpty()) null else alt, "")
+                    }
+
                     parents.add(element)
                     lastStartIndex = endIndex
                 }
@@ -247,6 +297,13 @@ sealed class Element {
     ) : Element()
 
     data class BlockCode(
+        override val text: CharSequence,
+        override val elements: List<Element> = emptyList()
+    ) : Element()
+
+    data class Image(
+        val url: String,
+        val alt: String?,
         override val text: CharSequence,
         override val elements: List<Element> = emptyList()
     ) : Element()
