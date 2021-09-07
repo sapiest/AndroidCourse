@@ -50,7 +50,7 @@ class ArticleViewModel(private val articleId: String, savedStateHandle: SavedSta
             content ?: return@subscribeOnDataSource null
             state.copy(
                 isLoadingContent = false,
-                content = content as List<String>
+                content = content as String
             )
         }
     }
@@ -62,13 +62,13 @@ class ArticleViewModel(private val articleId: String, savedStateHandle: SavedSta
     override fun handleSearch(query: String?) {
         query ?: return
 
-        val result = currentState.content.firstOrNull().indexesOf(query)
+        val result = currentState.content.indexesOf(query)
             .map { it to it + query.length }
 
         updateState { it.copy(searchQuery = query, searchResults = result) }
     }
 
-    override fun getArticleContent(): LiveData<List<String>?> {
+    override fun getArticleContent(): LiveData<String?> {
         return repository.loadArticleContent(articleId)
     }
 
@@ -167,11 +167,11 @@ data class ArticleState(
     val date: String? = null,
     val author: Any? = null,
     val poster: String? = null,
-    val content: List<String> = emptyList(),
+    val content: String = "Loading",
     val reviews: List<Any> = emptyList()
 ) : VMState {
     override fun toBundle(): Bundle {
-        val map = copy(content = emptyList(), isLoadingContent = true)
+        val map = copy(content = "Loading", isLoadingContent = true)
             .asMap()
             .toList()
             .toTypedArray()
@@ -201,7 +201,7 @@ data class ArticleState(
             date = map["date"] as String,
             author = map["author"] as Any,
             poster = map["poster"] as String,
-            content = map["content"] as List<String>,
+            content = map["content"] as String,
             reviews = map["reviews"] as List<Any>
         )
     }

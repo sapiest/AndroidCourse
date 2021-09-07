@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Selection
 import android.text.Spannable
 import android.text.SpannableString
+import android.text.method.LinkMovementMethod
 import android.text.method.ScrollingMovementMethod
 import android.view.Menu
 import android.view.MenuItem
@@ -27,6 +28,7 @@ import ru.skillbranch.skillarticles.databinding.ActivityRootBinding
 import ru.skillbranch.skillarticles.databinding.LayoutSubmenuBinding
 import ru.skillbranch.skillarticles.extensions.dpToIntPx
 import ru.skillbranch.skillarticles.extensions.setMarginOptionally
+import ru.skillbranch.skillarticles.markdown.MarkdownBuilder
 import ru.skillbranch.skillarticles.ui.custom.*
 import ru.skillbranch.skillarticles.ui.delegates.AttrValue
 import ru.skillbranch.skillarticles.ui.delegates.viewBinding
@@ -192,16 +194,18 @@ class RootActivity : AppCompatActivity(), IArticleView {
 
         with(tvTextContent) {
             textSize = if (data.isBigText) 18f else 14f
-            movementMethod = ScrollingMovementMethod()
-            val content = if (data.isLoadingContent) "Loading" else data.content.first()
-            if (text.toString() == content) {
-                setText(content, TextView.BufferType.SPANNABLE)
-            }
+            movementMethod = LinkMovementMethod()
+
+            MarkdownBuilder(context).markdownToSpan(data.content).run { setText(this, TextView.BufferType.SPANNABLE)}
+//            val content = if (data.isLoadingContent) "Loading" else data.content.first()
+//            if (text.toString() == content) {
+//                setText(content, TextView.BufferType.SPANNABLE)
+//            }
         }
 
-        //bind content
-        tvTextContent.text =
-            if (data.isLoadingContent) "Loading" else data.content.first() as String
+//        //bind content
+//        tvTextContent.text =
+//            if (data.isLoadingContent) "Loading" else data.content
 
         //bind toolbar
 
