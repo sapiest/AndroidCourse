@@ -47,21 +47,45 @@ object MarkdownParser {
 
     fun clear(string: String): String? {
         val result = parse(string)
-        val str = StringBuilder()
-//        result.elements.forEach {
-//            str.append(clearChildren(it))
-//        }
-        return str.toString()
+        val builder = StringBuilder()
+        result.elements.forEach {
+            clearChildren(it, builder)
+        }
+        return builder.toString()
     }
 
-    private fun clearChildren(element: Element): String{
-        val str = StringBuilder()
-        str.append(element.text)
-//        element.elements.forEach {
-//            str.append(clearChildren(it))
-//        }
-        return str.toString()
+    private fun clearChildren(element: Element, builder: StringBuilder): CharSequence {
+        return builder.apply {
+            when (element) {
+                is Element.Text -> append(element.text)
+
+                is Element.UnorderedListItem -> {
+                    for (child in element.elements) {
+                        clearChildren(child, builder)
+                    }
+                }
+
+                is Element.Quote -> {
+                    for (child in element.elements) {
+                        clearChildren(child, builder)
+                    }
+                }
+
+                is Element.Header -> append(element.text)
+
+                is Element.Italic, is Element.Bold, is Element.Strike -> {
+                    for (child in element.elements) {
+                        clearChildren(child, builder)
+                    }
+                }
+
+                is Element.Rule, is Element.InlineCode, is Element.Link -> append(element.text)
+
+                else -> append(element.text)
+            }
+        }
     }
+
 
     /**
      *  find markdown elements in markdown text
