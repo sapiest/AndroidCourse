@@ -297,7 +297,7 @@ sealed class Element {
     ) : Element()
 
     data class Rule(
-        override val text: CharSequence = "",
+        override val text: CharSequence = " ",
         override val elements: List<Element> = emptyList()
     ) : Element()
 
