@@ -58,13 +58,13 @@ object MarkdownParser {
             when (element) {
                 is Element.Text -> append(element.text)
 
-                is Element.UnorderedListItem -> {
+                is Element.UnorderedListItem, is Element.OrderedListItem -> {
                     for (child in element.elements) {
                         clearChildren(child, builder)
                     }
                 }
 
-                is Element.Quote -> {
+                is Element.Quote, is Element.BlockCode, is Element.Image -> {
                     for (child in element.elements) {
                         clearChildren(child, builder)
                     }
