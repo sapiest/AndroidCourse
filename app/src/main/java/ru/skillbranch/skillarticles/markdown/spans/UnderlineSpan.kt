@@ -36,7 +36,7 @@ class UnderlineSpan(
         }
         canvas.drawText(
             text, 0, text.length,
-            x, bottom.toFloat(),
+            x, y.toFloat(),
             paint
         )
     }
