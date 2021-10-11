@@ -8,8 +8,8 @@ package ru.skillbranch.skillarticles
 
 import org.junit.Assert
 import org.junit.Test
-import ru.skillbranch.skillarticles.markdown.Element
-import ru.skillbranch.skillarticles.markdown.MarkdownParser
+import ru.skillbranch.skillarticles.ui.custom.markdown.Element
+import ru.skillbranch.skillarticles.ui.custom.markdown.MarkdownParser
 
 /**
  * Example local unit test, which will execute on the development machine (host).

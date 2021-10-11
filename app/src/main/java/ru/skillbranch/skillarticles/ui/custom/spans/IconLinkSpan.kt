@@ -1,4 +1,4 @@
-package ru.skillbranch.skillarticles.markdown.spans
+package ru.skillbranch.skillarticles.ui.custom.spans
 
 import android.graphics.Canvas
 import android.graphics.DashPathEffect
@@ -9,7 +9,6 @@ import android.text.style.ReplacementSpan
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import androidx.annotation.VisibleForTesting
-import ru.skillbranch.skillarticles.extensions.dpToPx
 
 class IconLinkSpan(
     private val linkDrawable: Drawable,

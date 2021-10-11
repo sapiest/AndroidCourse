@@ -13,9 +13,9 @@ interface IArticleView {
     fun renderSubmenu(data: SubmenuData)
     fun setupToolbar()
     fun renderSearchResult(searchResult: List<Pair<Int, Int>>)
-    fun renderSearchPosition(searchPosition: Int)
+    fun renderSearchPosition(searchPosition: Int, searchResult: List<Pair<Int, Int>>)
     fun clearSearchResult()
     fun showSearchBar(resultsCount: Int, searchPosition: Int)
     fun hideSearchBar()
-
+    fun setupCopyListener()
 }
